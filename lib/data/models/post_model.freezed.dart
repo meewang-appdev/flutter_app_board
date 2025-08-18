@@ -25,6 +25,7 @@ mixin _$PostListItemModel {
   String get title => throw _privateConstructorUsedError;
   AuthorModel get author => throw _privateConstructorUsedError;
   BoardModel? get board => throw _privateConstructorUsedError;
+  CategoryModel get category => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_notice')
   bool get isNotice => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
@@ -56,6 +57,7 @@ abstract class $PostListItemModelCopyWith<$Res> {
     String title,
     AuthorModel author,
     BoardModel? board,
+    CategoryModel category,
     @JsonKey(name: 'is_notice') bool isNotice,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'view_count') int viewCount,
@@ -64,6 +66,7 @@ abstract class $PostListItemModelCopyWith<$Res> {
 
   $AuthorModelCopyWith<$Res> get author;
   $BoardModelCopyWith<$Res>? get board;
+  $CategoryModelCopyWith<$Res> get category;
 }
 
 /// @nodoc
@@ -85,6 +88,7 @@ class _$PostListItemModelCopyWithImpl<$Res, $Val extends PostListItemModel>
     Object? title = null,
     Object? author = null,
     Object? board = freezed,
+    Object? category = null,
     Object? isNotice = null,
     Object? createdAt = null,
     Object? viewCount = null,
@@ -112,6 +116,11 @@ class _$PostListItemModelCopyWithImpl<$Res, $Val extends PostListItemModel>
                     ? _value.board
                     : board // ignore: cast_nullable_to_non_nullable
                         as BoardModel?,
+            category:
+                null == category
+                    ? _value.category
+                    : category // ignore: cast_nullable_to_non_nullable
+                        as CategoryModel,
             isNotice:
                 null == isNotice
                     ? _value.isNotice
@@ -160,6 +169,16 @@ class _$PostListItemModelCopyWithImpl<$Res, $Val extends PostListItemModel>
       return _then(_value.copyWith(board: value) as $Val);
     });
   }
+
+  /// Create a copy of PostListItemModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CategoryModelCopyWith<$Res> get category {
+    return $CategoryModelCopyWith<$Res>(_value.category, (value) {
+      return _then(_value.copyWith(category: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -176,6 +195,7 @@ abstract class _$$PostListItemModelImplCopyWith<$Res>
     String title,
     AuthorModel author,
     BoardModel? board,
+    CategoryModel category,
     @JsonKey(name: 'is_notice') bool isNotice,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'view_count') int viewCount,
@@ -186,6 +206,8 @@ abstract class _$$PostListItemModelImplCopyWith<$Res>
   $AuthorModelCopyWith<$Res> get author;
   @override
   $BoardModelCopyWith<$Res>? get board;
+  @override
+  $CategoryModelCopyWith<$Res> get category;
 }
 
 /// @nodoc
@@ -206,6 +228,7 @@ class __$$PostListItemModelImplCopyWithImpl<$Res>
     Object? title = null,
     Object? author = null,
     Object? board = freezed,
+    Object? category = null,
     Object? isNotice = null,
     Object? createdAt = null,
     Object? viewCount = null,
@@ -233,6 +256,11 @@ class __$$PostListItemModelImplCopyWithImpl<$Res>
                 ? _value.board
                 : board // ignore: cast_nullable_to_non_nullable
                     as BoardModel?,
+        category:
+            null == category
+                ? _value.category
+                : category // ignore: cast_nullable_to_non_nullable
+                    as CategoryModel,
         isNotice:
             null == isNotice
                 ? _value.isNotice
@@ -266,6 +294,7 @@ class _$PostListItemModelImpl implements _PostListItemModel {
     required this.title,
     required this.author,
     this.board,
+    required this.category,
     @JsonKey(name: 'is_notice') this.isNotice = false,
     @JsonKey(name: 'created_at') required this.createdAt,
     @JsonKey(name: 'view_count') required this.viewCount,
@@ -284,6 +313,8 @@ class _$PostListItemModelImpl implements _PostListItemModel {
   @override
   final BoardModel? board;
   @override
+  final CategoryModel category;
+  @override
   @JsonKey(name: 'is_notice')
   final bool isNotice;
   @override
@@ -298,7 +329,7 @@ class _$PostListItemModelImpl implements _PostListItemModel {
 
   @override
   String toString() {
-    return 'PostListItemModel(id: $id, title: $title, author: $author, board: $board, isNotice: $isNotice, createdAt: $createdAt, viewCount: $viewCount, likeCount: $likeCount)';
+    return 'PostListItemModel(id: $id, title: $title, author: $author, board: $board, category: $category, isNotice: $isNotice, createdAt: $createdAt, viewCount: $viewCount, likeCount: $likeCount)';
   }
 
   @override
@@ -310,6 +341,8 @@ class _$PostListItemModelImpl implements _PostListItemModel {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.author, author) || other.author == author) &&
             (identical(other.board, board) || other.board == board) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
             (identical(other.isNotice, isNotice) ||
                 other.isNotice == isNotice) &&
             (identical(other.createdAt, createdAt) ||
@@ -328,6 +361,7 @@ class _$PostListItemModelImpl implements _PostListItemModel {
     title,
     author,
     board,
+    category,
     isNotice,
     createdAt,
     viewCount,
@@ -357,6 +391,7 @@ abstract class _PostListItemModel implements PostListItemModel {
     required final String title,
     required final AuthorModel author,
     final BoardModel? board,
+    required final CategoryModel category,
     @JsonKey(name: 'is_notice') final bool isNotice,
     @JsonKey(name: 'created_at') required final DateTime createdAt,
     @JsonKey(name: 'view_count') required final int viewCount,
@@ -374,6 +409,8 @@ abstract class _PostListItemModel implements PostListItemModel {
   AuthorModel get author;
   @override
   BoardModel? get board;
+  @override
+  CategoryModel get category;
   @override
   @JsonKey(name: 'is_notice')
   bool get isNotice;

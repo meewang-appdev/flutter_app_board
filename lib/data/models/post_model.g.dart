@@ -16,6 +16,7 @@ _$PostListItemModelImpl _$$PostListItemModelImplFromJson(
       json['board'] == null
           ? null
           : BoardModel.fromJson(json['board'] as Map<String, dynamic>),
+  category: CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
   isNotice: json['is_notice'] as bool? ?? false,
   createdAt: DateTime.parse(json['created_at'] as String),
   viewCount: (json['view_count'] as num).toInt(),
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$PostListItemModelImplToJson(
   'title': instance.title,
   'author': instance.author,
   'board': instance.board,
+  'category': instance.category,
   'is_notice': instance.isNotice,
   'created_at': instance.createdAt.toIso8601String(),
   'view_count': instance.viewCount,

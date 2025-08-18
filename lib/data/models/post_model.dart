@@ -14,6 +14,7 @@ class PostListItemModel with _$PostListItemModel {
     required String title,
     required AuthorModel author,
     BoardModel? board,
+    required CategoryModel category,
     @JsonKey(name: 'is_notice') @Default(false) bool isNotice,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'view_count') required int viewCount,

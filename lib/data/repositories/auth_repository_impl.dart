@@ -1,13 +1,19 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../domain/repositories/auth_repository.dart';
+import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
+  final AuthLocalDataSource localDataSource;
   final FlutterSecureStorage secureStorage;
 
-  AuthRepositoryImpl({required this.remoteDataSource, required this.secureStorage});
+  AuthRepositoryImpl({
+    required this.remoteDataSource,
+    required this.localDataSource,
+    required this.secureStorage,
+  });
 
   @override
   Future<void> login(String username, String password) async {
@@ -21,10 +27,35 @@ class AuthRepositoryImpl implements AuthRepository {
     await secureStorage.delete(key: 'access_token');
   }
 
+  // @override
+  // Future<bool> isLoggedIn() async {
+  //   // 토큰 존재 여부로 로그인 상태를 확인
+  //   final token = await secureStorage.read(key: 'access_token');
+  //   return token != null;
+  // }
+
   @override
-  Future<bool> isLoggedIn() async {
-    // 토큰 존재 여부로 로그인 상태를 확인
-    final token = await secureStorage.read(key: 'access_token');
-    return token != null;
+  Future<void> saveCredentials(String username, String password) {
+    return localDataSource.saveCredentials(username, password);
+  }
+
+  @override
+  Future<Map<String, String>> getCredentials() {
+    return localDataSource.getCredentials();
+  }
+
+  @override
+  Future<void> clearCredentials() {
+    return localDataSource.clearCredentials();
+  }
+
+  @override
+  Future<bool> getRememberMe() {
+    return localDataSource.getRememberMe();
+  }
+
+  @override
+  Future<void> saveRememberMe(bool value) {
+    return localDataSource.saveRememberMe(value);
   }
 }

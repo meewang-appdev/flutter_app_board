@@ -21,6 +21,7 @@ mixin _$Post {
   String get title => throw _privateConstructorUsedError;
   Author get author => throw _privateConstructorUsedError;
   Board? get board => throw _privateConstructorUsedError;
+  Category get category => throw _privateConstructorUsedError;
   bool get isNotice => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   int get viewCount => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $PostCopyWith<$Res> {
     String title,
     Author author,
     Board? board,
+    Category category,
     bool isNotice,
     DateTime createdAt,
     int viewCount,
@@ -50,6 +52,7 @@ abstract class $PostCopyWith<$Res> {
 
   $AuthorCopyWith<$Res> get author;
   $BoardCopyWith<$Res>? get board;
+  $CategoryCopyWith<$Res> get category;
 }
 
 /// @nodoc
@@ -71,6 +74,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? title = null,
     Object? author = null,
     Object? board = freezed,
+    Object? category = null,
     Object? isNotice = null,
     Object? createdAt = null,
     Object? viewCount = null,
@@ -98,6 +102,11 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
                     ? _value.board
                     : board // ignore: cast_nullable_to_non_nullable
                         as Board?,
+            category:
+                null == category
+                    ? _value.category
+                    : category // ignore: cast_nullable_to_non_nullable
+                        as Category,
             isNotice:
                 null == isNotice
                     ? _value.isNotice
@@ -146,6 +155,16 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
       return _then(_value.copyWith(board: value) as $Val);
     });
   }
+
+  /// Create a copy of Post
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CategoryCopyWith<$Res> get category {
+    return $CategoryCopyWith<$Res>(_value.category, (value) {
+      return _then(_value.copyWith(category: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -161,6 +180,7 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
     String title,
     Author author,
     Board? board,
+    Category category,
     bool isNotice,
     DateTime createdAt,
     int viewCount,
@@ -171,6 +191,8 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
   $AuthorCopyWith<$Res> get author;
   @override
   $BoardCopyWith<$Res>? get board;
+  @override
+  $CategoryCopyWith<$Res> get category;
 }
 
 /// @nodoc
@@ -189,6 +211,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? title = null,
     Object? author = null,
     Object? board = freezed,
+    Object? category = null,
     Object? isNotice = null,
     Object? createdAt = null,
     Object? viewCount = null,
@@ -216,6 +239,11 @@ class __$$PostImplCopyWithImpl<$Res>
                 ? _value.board
                 : board // ignore: cast_nullable_to_non_nullable
                     as Board?,
+        category:
+            null == category
+                ? _value.category
+                : category // ignore: cast_nullable_to_non_nullable
+                    as Category,
         isNotice:
             null == isNotice
                 ? _value.isNotice
@@ -249,6 +277,7 @@ class _$PostImpl implements _Post {
     required this.title,
     required this.author,
     this.board,
+    required this.category,
     required this.isNotice,
     required this.createdAt,
     required this.viewCount,
@@ -264,6 +293,8 @@ class _$PostImpl implements _Post {
   @override
   final Board? board;
   @override
+  final Category category;
+  @override
   final bool isNotice;
   @override
   final DateTime createdAt;
@@ -274,7 +305,7 @@ class _$PostImpl implements _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, author: $author, board: $board, isNotice: $isNotice, createdAt: $createdAt, viewCount: $viewCount, likeCount: $likeCount)';
+    return 'Post(id: $id, title: $title, author: $author, board: $board, category: $category, isNotice: $isNotice, createdAt: $createdAt, viewCount: $viewCount, likeCount: $likeCount)';
   }
 
   @override
@@ -286,6 +317,8 @@ class _$PostImpl implements _Post {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.author, author) || other.author == author) &&
             (identical(other.board, board) || other.board == board) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
             (identical(other.isNotice, isNotice) ||
                 other.isNotice == isNotice) &&
             (identical(other.createdAt, createdAt) ||
@@ -303,6 +336,7 @@ class _$PostImpl implements _Post {
     title,
     author,
     board,
+    category,
     isNotice,
     createdAt,
     viewCount,
@@ -324,6 +358,7 @@ abstract class _Post implements Post {
     required final String title,
     required final Author author,
     final Board? board,
+    required final Category category,
     required final bool isNotice,
     required final DateTime createdAt,
     required final int viewCount,
@@ -338,6 +373,8 @@ abstract class _Post implements Post {
   Author get author;
   @override
   Board? get board;
+  @override
+  Category get category;
   @override
   bool get isNotice;
   @override

@@ -35,7 +35,7 @@ class PostListScreen extends ConsumerWidget {
                     color: post.isNotice ? Colors.blueAccent : null,
                   ),
                 ),
-                subtitle: Text('작성자: ${post.author.nickname}'),
+                subtitle: Text('[${post.category.name}] 작성자: ${post.author.nickname}'),
                 onTap: () {
                   context.go('/$slug/posts/${post.id}');
                 },

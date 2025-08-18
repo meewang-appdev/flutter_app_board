@@ -59,6 +59,7 @@ class BoardRepositoryImpl implements BoardRepository {
       board: model.board != null
           ? Board(id: model.board.id, name: model.board.name, slug: model.board.slug)
           : null,
+      category: Category(name: model.category.name),
       isNotice: model.isNotice,
       createdAt: model.createdAt,
       viewCount: model.viewCount,
