@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/auth_providers.dart';
 import '../providers/board_providers.dart';
@@ -10,38 +11,59 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 이 화면은 인증된 사용자만 볼 수 있으므로, 바로 게시판 데이터를 요청합니다.
     final boardsAsyncValue = ref.watch(boardsProvider);
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('게시판 목록'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () => context.go('/search'),
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authNotifierProvider.notifier).logout(),
-          ),
+      // [수정] 하단 내비게이션 바 추가
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0, // 현재 '홈' 탭이 선택됨
+        onTap: (index) {
+          if (index == 1) {
+            context.go('/search');
+          } else if (index == 2) {
+            ref.read(authNotifierProvider.notifier).logout();
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: '홈'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: '검색'),
+          BottomNavigationBarItem(icon: Icon(Icons.logout), label: '로그아웃'),
         ],
       ),
+      // [수정] CustomScrollView와 Sliver를 사용하여 동적인 스크롤 화면 구현
       body: boardsAsyncValue.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('에러: $err')),
         data: (boards) {
-          return ListView.builder(
-            itemCount: boards.length,
-            itemBuilder: (context, index) {
-              final board = boards[index];
-              return ListTile(
-                title: Text(board.name),
-                onTap: () {
-                  context.go('/${board.slug}/posts');
-                },
-              );
-            },
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                expandedHeight: 120.0,
+                backgroundColor: colorScheme.primary, // [수정] 배경색 추가
+                foregroundColor: Colors.white, // [추가] 아이콘/뒤로가기 버튼 색상
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text('게시판', style: textTheme.titleLarge),
+                  centerTitle: false,
+                ),
+              ),
+              // '업무보고일지' 링크를 위한 Sliver
+              SliverToBoxAdapter(
+                child: _ReportCard(),
+              ),
+              // 게시판 목록을 위한 Sliver
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                    final board = boards[index];
+                    return _BoardCard(board: board);
+                  },
+                  childCount: boards.length,
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -49,94 +71,58 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-// class HomeScreen extends ConsumerWidget {
-//   const HomeScreen({super.key});
-//
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     // 앱의 전반적인 인증 상태를 감시합니다.
-//     final authState = ref.watch(authNotifierProvider);
-//     final boardsAsyncValue = ref.watch(boardsProvider);
-//
-//     // 1. 인증 상태를 아직 모를 경우 (앱 첫 실행 시)
-//     if (authState == AuthState.unknown) {
-//       return const Scaffold(
-//         body: Center(child: CircularProgressIndicator()),
-//       );
-//     }
-//
-//     // 2. 로그아웃 상태일 경우 (로그인 유도 화면)
-//     if (authState == AuthState.unauthenticated) {
-//       return Scaffold(
-//         // [수정] 배경 이미지를 삭제하고 어두운 배경색을 지정합니다.
-//         backgroundColor: const Color(0xFF1a1a1a),
-//         body: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Container(
-//                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-//                 decoration: BoxDecoration(
-//                   color: Colors.black.withOpacity(0.5), // 어두운 반투명 배경
-//                   borderRadius: BorderRadius.circular(8), // 둥근 모서리
-//                 ),
-//                 child: const Text(
-//                   '서비스를 이용하려면\n로그인이 필요합니다.',
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(color: Colors.white, fontSize: 18, height: 1.5),
-//                 ),
-//               ),
-//               const SizedBox(height: 24),
-//               ElevatedButton(
-//                 onPressed: () => context.go('/login'),
-//                 style: ElevatedButton.styleFrom(
-//                   backgroundColor: const Color(0xFF6A11CB),
-//                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-//                 ),
-//                 child: const Text(
-//                   '로그인 화면으로 이동',
-//                   style: TextStyle(fontSize: 16, color: Colors.white),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       );
-//     }
-//
-//     // 3. 로그인 상태일 경우 (게시판 목록)
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('게시판 목록'),
-//         actions: [
-//           IconButton(
-//             icon: const Icon(Icons.search),
-//             onPressed: () => context.go('/search'),
-//           ),
-//           IconButton(
-//             icon: const Icon(Icons.logout),
-//             onPressed: () => ref.read(authNotifierProvider.notifier).logout(),
-//           ),
-//         ],
-//       ),
-//       body: boardsAsyncValue.when(
-//         loading: () => const Center(child: CircularProgressIndicator()),
-//         error: (err, stack) => Center(child: Text('에러: $err')),
-//         data: (boards) {
-//           return ListView.builder(
-//             itemCount: boards.length,
-//             itemBuilder: (context, index) {
-//               final board = boards[index];
-//               return ListTile(
-//                 title: Text(board.name),
-//                 onTap: () {
-//                   context.go('/${board.slug}/posts');
-//                 },
-//               );
-//             },
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
+// [추가] 업무보고일지 링크를 위한 커스텀 카드 위젯
+class _ReportCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          child: Icon(
+            Icons.assignment_ind_outlined,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        title: Text('업무보고일지', style: Theme.of(context).textTheme.titleMedium),
+        subtitle: const Text('웹 페이지로 이동'),
+        trailing: const Icon(Icons.open_in_new, size: 20),
+        onTap: () async {
+          final url = Uri.parse('https://docs.google.com/spreadsheets/d/1OpsMiIESCJVfl9Z9glOE5JJdD514sXXhPcz4bB9gzqw/edit?gid=876085385#gid=876085385');
+          if (await canLaunchUrl(url)) {
+            await launchUrl(url, mode: LaunchMode.externalApplication);
+          }
+        },
+      ),
+    );
+  }
+}
+
+// [추가] 게시판 목록 항목을 위한 커스텀 카드 위젯
+class _BoardCard extends StatelessWidget {
+  final dynamic board;
+  const _BoardCard({required this.board});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: Icon(
+            Icons.article_outlined,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        title: Text(board.name, style: Theme.of(context).textTheme.titleMedium),
+        subtitle: const Text('게시판 바로가기'),
+        trailing: const Icon(Icons.chevron_right, size: 20),
+        onTap: () {
+          context.go('/${board.slug}/posts');
+        },
+      ),
+    );
+  }
+}

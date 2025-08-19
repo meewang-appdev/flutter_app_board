@@ -14,52 +14,76 @@ import '../screens/search_screen.dart';
 final routerProvider = Provider<GoRouter>((ref) {
   final refreshNotifier = ValueNotifier<int>(0);
   ref.onDispose(() => refreshNotifier.dispose());
-  ref.listen(authNotifierProvider, (_, __) => refreshNotifier.value++);
+
+  ref.listen(authNotifierProvider, (_, __) {
+    refreshNotifier.value++;
+  });
 
   return GoRouter(
     refreshListenable: refreshNotifier,
     initialLocation: '/login',
-    redirect: (BuildContext context, GoRouterState state) {
+    redirect: (context, state) {
       final authState = ref.read(authNotifierProvider);
       final isLoggingIn = state.matchedLocation == '/login';
 
-      // 로그인 상태인데 로그인 페이지로 가려고 하면 홈으로 리다이렉트
-      if (authState == AuthState.authenticated && isLoggingIn) {
-        return '/';
-      }
-
-      // 로그아웃 상태인데 로그인 페이지가 아닌 곳으로 가려고 하면 로그인 페이지로 리다이렉트
-      if (authState == AuthState.unauthenticated && !isLoggingIn) {
-        return '/login';
-      }
-
+      if (authState == AuthState.authenticated && isLoggingIn) return '/';
+      if (authState == AuthState.unauthenticated && !isLoggingIn) return '/login';
       return null;
     },
     routes: <GoRoute>[
       GoRoute(
         path: '/login',
-        builder: (BuildContext context, GoRouterState state) => const LoginScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const LoginScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/',
-        builder: (BuildContext context, GoRouterState state) => const HomeScreen(),
+        redirect: (context, state) {
+          final authState = ref.read(authNotifierProvider);
+          return authState == AuthState.authenticated ? null : '/login';
+        },
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
         routes: [
           GoRoute(
             path: 'search',
-            builder: (BuildContext context, GoRouterState state) => const SearchScreen(),
+            pageBuilder: (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: const SearchScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                  FadeTransition(opacity: animation, child: child),
+            ),
           ),
           GoRoute(
               path: ':slug/posts',
-              builder: (BuildContext context, GoRouterState state) {
+              pageBuilder: (context, state) {
                 final slug = state.pathParameters['slug']!;
-                return PostListScreen(slug: slug);
+                return CustomTransitionPage(
+                  key: state.pageKey,
+                  child: PostListScreen(slug: slug),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                      FadeTransition(opacity: animation, child: child),
+                );
               },
               routes: [
                 GoRoute(
                   path: ':id',
-                  builder: (BuildContext context, GoRouterState state) {
+                  pageBuilder: (context, state) {
                     final id = int.parse(state.pathParameters['id']!);
-                    return PostDetailScreen(id: id);
+                    return CustomTransitionPage(
+                      key: state.pageKey,
+                      child: PostDetailScreen(id: id),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                          FadeTransition(opacity: animation, child: child),
+                    );
                   },
                 ),
               ]

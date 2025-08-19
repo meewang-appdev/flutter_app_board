@@ -1,32 +1,22 @@
-import 'package:dio/dio.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data/api_client.dart';
 import '../../data/datasources/auth_local_data_source.dart';
 import '../../data/datasources/auth_remote_data_source.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/auth_usecases.dart';
+import 'core_providers.dart';
 
-// --- 의존성 주입(DI)을 위한 Provider들 ---
-final dioProvider = Provider((ref) => Dio());
+// --- 의존성 주입(DI) ---
 final secureStorageProvider = Provider((ref) => const FlutterSecureStorage());
-
-final apiClientProvider = Provider((ref) => ApiClient(ref));
-
-final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError();
-});
-
-final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>(
-      (ref) => AuthRemoteDataSourceImpl(ref.watch(apiClientProvider).dio),
-);
 
 final authLocalDataSourceProvider = Provider<AuthLocalDataSource>(
       (ref) => AuthLocalDataSourceImpl(ref.watch(sharedPreferencesProvider)),
+);
+
+final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>(
+      (ref) => AuthRemoteDataSourceImpl(ref.watch(apiClientProvider).dio),
 );
 
 final authRepositoryProvider = Provider<AuthRepository>(
@@ -40,7 +30,6 @@ final authRepositoryProvider = Provider<AuthRepository>(
 // --- UseCase Provider들 ---
 final loginUseCaseProvider = Provider((ref) => LoginUseCase(ref.watch(authRepositoryProvider)));
 final logoutUseCaseProvider = Provider((ref) => LogoutUseCase(ref.watch(authRepositoryProvider)));
-// final getAuthStatusUseCaseProvider = Provider((ref) => GetAuthStatusUseCase(ref.watch(authRepositoryProvider)));
 final saveCredentialsUseCaseProvider = Provider((ref) => SaveCredentialsUseCase(ref.watch(authRepositoryProvider)));
 final getCredentialsUseCaseProvider = Provider((ref) => GetCredentialsUseCase(ref.watch(authRepositoryProvider)));
 final clearCredentialsUseCaseProvider = Provider((ref) => ClearCredentialsUseCase(ref.watch(authRepositoryProvider)));
@@ -48,7 +37,6 @@ final saveRememberMeUseCaseProvider = Provider((ref) => SaveRememberMeUseCase(re
 final getRememberMeUseCaseProvider = Provider((ref) => GetRememberMeUseCase(ref.watch(authRepositoryProvider)));
 
 // --- 앱의 전반적인 인증 상태를 관리하는 Notifier ---
-// enum AuthState { unknown, authenticated, unauthenticated }
 enum AuthState { authenticated, unauthenticated }
 
 final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
@@ -56,7 +44,6 @@ final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(AuthNotif
 class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
-    // [수정] 앱 시작 시 자동 로그인을 하지 않고, 항상 로그아웃 상태에서 시작합니다.
     return AuthState.unauthenticated;
   }
 
@@ -71,6 +58,7 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 }
 
+// --- '로그인 정보 기억' 체크박스 상태 관리 Notifier ---
 final rememberMeNotifierProvider = NotifierProvider<RememberMeNotifier, bool>(RememberMeNotifier.new);
 
 class RememberMeNotifier extends Notifier<bool> {
@@ -88,7 +76,7 @@ class RememberMeNotifier extends Notifier<bool> {
   }
 }
 
-// --- 로그인 ViewModel 수정 ---
+// --- 로그인 ViewModel ---
 final loginViewModelProvider = StateNotifierProvider<LoginViewModel, AsyncValue<void>>((ref) {
   return LoginViewModel(
     ref.read(authNotifierProvider.notifier),
