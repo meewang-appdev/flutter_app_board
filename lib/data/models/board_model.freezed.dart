@@ -24,6 +24,10 @@ mixin _$BoardModel {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get slug => throw _privateConstructorUsedError;
+  @JsonKey(name: 'login_required')
+  bool get loginRequired => throw _privateConstructorUsedError;
+  @JsonKey(name: 'admin_only')
+  bool get adminOnly => throw _privateConstructorUsedError;
 
   /// Serializes this BoardModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +46,13 @@ abstract class $BoardModelCopyWith<$Res> {
     $Res Function(BoardModel) then,
   ) = _$BoardModelCopyWithImpl<$Res, BoardModel>;
   @useResult
-  $Res call({int id, String name, String slug});
+  $Res call({
+    int id,
+    String name,
+    String slug,
+    @JsonKey(name: 'login_required') bool loginRequired,
+    @JsonKey(name: 'admin_only') bool adminOnly,
+  });
 }
 
 /// @nodoc
@@ -59,7 +69,13 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? name = null, Object? slug = null}) {
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? slug = null,
+    Object? loginRequired = null,
+    Object? adminOnly = null,
+  }) {
     return _then(
       _value.copyWith(
             id:
@@ -77,6 +93,16 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
                     ? _value.slug
                     : slug // ignore: cast_nullable_to_non_nullable
                         as String,
+            loginRequired:
+                null == loginRequired
+                    ? _value.loginRequired
+                    : loginRequired // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            adminOnly:
+                null == adminOnly
+                    ? _value.adminOnly
+                    : adminOnly // ignore: cast_nullable_to_non_nullable
+                        as bool,
           )
           as $Val,
     );
@@ -92,7 +118,13 @@ abstract class _$$BoardModelImplCopyWith<$Res>
   ) = __$$BoardModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, String slug});
+  $Res call({
+    int id,
+    String name,
+    String slug,
+    @JsonKey(name: 'login_required') bool loginRequired,
+    @JsonKey(name: 'admin_only') bool adminOnly,
+  });
 }
 
 /// @nodoc
@@ -108,7 +140,13 @@ class __$$BoardModelImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? name = null, Object? slug = null}) {
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? slug = null,
+    Object? loginRequired = null,
+    Object? adminOnly = null,
+  }) {
     return _then(
       _$BoardModelImpl(
         id:
@@ -126,6 +164,16 @@ class __$$BoardModelImplCopyWithImpl<$Res>
                 ? _value.slug
                 : slug // ignore: cast_nullable_to_non_nullable
                     as String,
+        loginRequired:
+            null == loginRequired
+                ? _value.loginRequired
+                : loginRequired // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        adminOnly:
+            null == adminOnly
+                ? _value.adminOnly
+                : adminOnly // ignore: cast_nullable_to_non_nullable
+                    as bool,
       ),
     );
   }
@@ -138,6 +186,8 @@ class _$BoardModelImpl implements _BoardModel {
     required this.id,
     required this.name,
     required this.slug,
+    @JsonKey(name: 'login_required') required this.loginRequired,
+    @JsonKey(name: 'admin_only') required this.adminOnly,
   });
 
   factory _$BoardModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -149,10 +199,16 @@ class _$BoardModelImpl implements _BoardModel {
   final String name;
   @override
   final String slug;
+  @override
+  @JsonKey(name: 'login_required')
+  final bool loginRequired;
+  @override
+  @JsonKey(name: 'admin_only')
+  final bool adminOnly;
 
   @override
   String toString() {
-    return 'BoardModel(id: $id, name: $name, slug: $slug)';
+    return 'BoardModel(id: $id, name: $name, slug: $slug, loginRequired: $loginRequired, adminOnly: $adminOnly)';
   }
 
   @override
@@ -162,12 +218,17 @@ class _$BoardModelImpl implements _BoardModel {
             other is _$BoardModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.slug, slug) || other.slug == slug));
+            (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.loginRequired, loginRequired) ||
+                other.loginRequired == loginRequired) &&
+            (identical(other.adminOnly, adminOnly) ||
+                other.adminOnly == adminOnly));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, slug);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, slug, loginRequired, adminOnly);
 
   /// Create a copy of BoardModel
   /// with the given fields replaced by the non-null parameter values.
@@ -188,6 +249,8 @@ abstract class _BoardModel implements BoardModel {
     required final int id,
     required final String name,
     required final String slug,
+    @JsonKey(name: 'login_required') required final bool loginRequired,
+    @JsonKey(name: 'admin_only') required final bool adminOnly,
   }) = _$BoardModelImpl;
 
   factory _BoardModel.fromJson(Map<String, dynamic> json) =
@@ -199,6 +262,12 @@ abstract class _BoardModel implements BoardModel {
   String get name;
   @override
   String get slug;
+  @override
+  @JsonKey(name: 'login_required')
+  bool get loginRequired;
+  @override
+  @JsonKey(name: 'admin_only')
+  bool get adminOnly;
 
   /// Create a copy of BoardModel
   /// with the given fields replaced by the non-null parameter values.

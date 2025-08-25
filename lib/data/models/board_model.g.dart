@@ -11,6 +11,8 @@ _$BoardModelImpl _$$BoardModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       slug: json['slug'] as String,
+      loginRequired: json['login_required'] as bool,
+      adminOnly: json['admin_only'] as bool,
     );
 
 Map<String, dynamic> _$$BoardModelImplToJson(_$BoardModelImpl instance) =>
@@ -18,4 +20,6 @@ Map<String, dynamic> _$$BoardModelImplToJson(_$BoardModelImpl instance) =>
       'id': instance.id,
       'name': instance.name,
       'slug': instance.slug,
+      'login_required': instance.loginRequired,
+      'admin_only': instance.adminOnly,
     };

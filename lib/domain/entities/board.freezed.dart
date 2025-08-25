@@ -20,6 +20,8 @@ mixin _$Board {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get slug => throw _privateConstructorUsedError;
+  bool get loginRequired => throw _privateConstructorUsedError;
+  bool get adminOnly => throw _privateConstructorUsedError;
 
   /// Create a copy of Board
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +34,13 @@ abstract class $BoardCopyWith<$Res> {
   factory $BoardCopyWith(Board value, $Res Function(Board) then) =
       _$BoardCopyWithImpl<$Res, Board>;
   @useResult
-  $Res call({int id, String name, String slug});
+  $Res call({
+    int id,
+    String name,
+    String slug,
+    bool loginRequired,
+    bool adminOnly,
+  });
 }
 
 /// @nodoc
@@ -49,7 +57,13 @@ class _$BoardCopyWithImpl<$Res, $Val extends Board>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? name = null, Object? slug = null}) {
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? slug = null,
+    Object? loginRequired = null,
+    Object? adminOnly = null,
+  }) {
     return _then(
       _value.copyWith(
             id:
@@ -67,6 +81,16 @@ class _$BoardCopyWithImpl<$Res, $Val extends Board>
                     ? _value.slug
                     : slug // ignore: cast_nullable_to_non_nullable
                         as String,
+            loginRequired:
+                null == loginRequired
+                    ? _value.loginRequired
+                    : loginRequired // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            adminOnly:
+                null == adminOnly
+                    ? _value.adminOnly
+                    : adminOnly // ignore: cast_nullable_to_non_nullable
+                        as bool,
           )
           as $Val,
     );
@@ -81,7 +105,13 @@ abstract class _$$BoardImplCopyWith<$Res> implements $BoardCopyWith<$Res> {
   ) = __$$BoardImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, String slug});
+  $Res call({
+    int id,
+    String name,
+    String slug,
+    bool loginRequired,
+    bool adminOnly,
+  });
 }
 
 /// @nodoc
@@ -97,7 +127,13 @@ class __$$BoardImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? name = null, Object? slug = null}) {
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? slug = null,
+    Object? loginRequired = null,
+    Object? adminOnly = null,
+  }) {
     return _then(
       _$BoardImpl(
         id:
@@ -115,6 +151,16 @@ class __$$BoardImplCopyWithImpl<$Res>
                 ? _value.slug
                 : slug // ignore: cast_nullable_to_non_nullable
                     as String,
+        loginRequired:
+            null == loginRequired
+                ? _value.loginRequired
+                : loginRequired // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        adminOnly:
+            null == adminOnly
+                ? _value.adminOnly
+                : adminOnly // ignore: cast_nullable_to_non_nullable
+                    as bool,
       ),
     );
   }
@@ -123,7 +169,13 @@ class __$$BoardImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$BoardImpl implements _Board {
-  const _$BoardImpl({required this.id, required this.name, required this.slug});
+  const _$BoardImpl({
+    required this.id,
+    required this.name,
+    required this.slug,
+    required this.loginRequired,
+    required this.adminOnly,
+  });
 
   @override
   final int id;
@@ -131,10 +183,14 @@ class _$BoardImpl implements _Board {
   final String name;
   @override
   final String slug;
+  @override
+  final bool loginRequired;
+  @override
+  final bool adminOnly;
 
   @override
   String toString() {
-    return 'Board(id: $id, name: $name, slug: $slug)';
+    return 'Board(id: $id, name: $name, slug: $slug, loginRequired: $loginRequired, adminOnly: $adminOnly)';
   }
 
   @override
@@ -144,11 +200,16 @@ class _$BoardImpl implements _Board {
             other is _$BoardImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.slug, slug) || other.slug == slug));
+            (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.loginRequired, loginRequired) ||
+                other.loginRequired == loginRequired) &&
+            (identical(other.adminOnly, adminOnly) ||
+                other.adminOnly == adminOnly));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, slug);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, slug, loginRequired, adminOnly);
 
   /// Create a copy of Board
   /// with the given fields replaced by the non-null parameter values.
@@ -164,6 +225,8 @@ abstract class _Board implements Board {
     required final int id,
     required final String name,
     required final String slug,
+    required final bool loginRequired,
+    required final bool adminOnly,
   }) = _$BoardImpl;
 
   @override
@@ -172,6 +235,10 @@ abstract class _Board implements Board {
   String get name;
   @override
   String get slug;
+  @override
+  bool get loginRequired;
+  @override
+  bool get adminOnly;
 
   /// Create a copy of Board
   /// with the given fields replaced by the non-null parameter values.

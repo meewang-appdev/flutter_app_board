@@ -38,8 +38,21 @@ final addRecentSearchUseCaseProvider = Provider((ref) => AddRecentSearchUseCase(
 final getRecentSearchesUseCaseProvider = Provider((ref) => GetRecentSearchesUseCase(ref.watch(boardRepositoryProvider)));
 
 // --- 데이터 제공 Provider들 ---
-final boardsProvider = FutureProvider<List<Board>>((ref) => ref.watch(getBoardsUseCaseProvider).call());
+final boardsProvider = FutureProvider<List<Board>>((ref) {
+  // authNotifierProvider의 상태를 감시합니다.
+  // 로그아웃 상태일 때는 API를 호출하지 않도록 하여 불필요한 네트워크 요청을 방지합니다.
+  final authState = ref.watch(authNotifierProvider);
+  if (authState != AuthState.authenticated) {
+    return []; // 로그인 상태가 아니면 빈 목록 반환
+  }
+
+  // 로그인 상태일 때만 getBoardsUseCase를 호출합니다.
+  // authState가 변경되면(예: 로그인, 로그아웃) 이 Provider는 자동으로 재실행됩니다.
+  return ref.watch(getBoardsUseCaseProvider).call();
+});
+
 final postDetailProvider = FutureProvider.family<PostDetail, int>((ref, id) => ref.watch(getPostDetailUseCaseProvider).call(id));
+
 
 // --- ViewModel Provider들 ---
 final postListViewModelProvider = AsyncNotifierProvider.family<PostListViewModel, List<Post>, String>(PostListViewModel.new);

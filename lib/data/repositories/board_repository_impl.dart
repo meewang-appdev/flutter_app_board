@@ -19,7 +19,14 @@ class BoardRepositoryImpl implements BoardRepository {
   @override
   Future<List<Board>> getBoards() async {
     final boardModels = await remoteDataSource.getBoards();
-    return boardModels.map((model) => Board(id: model.id, name: model.name, slug: model.slug)).toList();
+    return boardModels
+        .map((model) => Board(
+      id: model.id,
+      name: model.name,
+      slug: model.slug,
+      loginRequired: model.loginRequired,
+      adminOnly: model.adminOnly,
+    )).toList();
   }
 
   @override
@@ -36,7 +43,12 @@ class BoardRepositoryImpl implements BoardRepository {
       title: model.title,
       content: model.content,
       author: Author(id: model.author.id, nickname: model.author.nickname),
-      board: Board(id: model.board.id, name: model.board.name, slug: model.board.slug),
+      board: Board(
+          id: model.board.id,
+          name: model.board.name,
+          slug: model.board.slug,
+          loginRequired: model.board.loginRequired,
+          adminOnly: model.board.adminOnly),
       category: Category(name: model.category.name),
       createdAt: model.createdAt,
       viewCount: model.viewCount,
@@ -57,7 +69,13 @@ class BoardRepositoryImpl implements BoardRepository {
       title: model.title,
       author: Author(id: model.author.id, nickname: model.author.nickname),
       board: model.board != null
-          ? Board(id: model.board.id, name: model.board.name, slug: model.board.slug)
+          ? Board(
+          id: model.board.id,
+          name: model.board.name,
+          slug: model.board.slug,
+          // [수정] model.board에서 속성을 가져오도록 수정
+          loginRequired: model.board.loginRequired,
+          adminOnly: model.board.adminOnly)
           : null,
       category: Category(name: model.category.name),
       isNotice: model.isNotice,

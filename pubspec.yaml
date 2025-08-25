@@ -61,6 +61,8 @@ dependencies:
   google_fonts: ^6.2.1
   shimmer: ^3.0.0
 
+  flutter_native_splash: ^2.4.6 # 최신 버전 확인
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -77,8 +79,18 @@ dev_dependencies:
   freezed: ^2.5.2
   json_serializable: ^6.8.0
 
+  flutter_launcher_icons: ^0.14.4 # 항상 최신 버전 확인
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_launcher_icons:
+  android: true # 안드로이드 플랫폼에 런처 아이콘 적용 여부
+  ios: true # iOS 플랫폼에 런처 아이콘 적용 여부
+  image_path: "assets/icons/appboard_icon.jpg" # 런처 아이콘으로 사용할 이미지 경로
+  adaptive_icon_background: "#000000" # 안드로이드 적응형 아이콘의 배경색 (검정색)
+  adaptive_icon_foreground: "assets/icons/appboard_icon.jpg" # 안드로이드 적응형 아이콘의 전경 이미지 경로
+  min_sdk_android: 21 # 안드로이드 최소 SDK 버전 (API 21(Android 5.0) 이상)
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -121,3 +133,41 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_native_splash:
+  # 스플래시 화면에 사용할 이미지 경로
+  image: "assets/images/appboard_splash.jpeg"
+  # 스플래시 화면의 배경 색상 (선택 사항, 기본값은 흰색)
+  color: "#000000"
+  # 또는 여러 색상을 지정하여 다크 모드/라이트 모드에 따라 다르게 설정할 수 있습니다.
+  # background_image: "assets/background_image.png" # 배경 이미지도 설정 가능
+
+  # Android 설정 (선택 사항)
+  android: true # Android 스플래시 화면 생성 여부
+  # android_gravity: center # 이미지 정렬 (center, top, bottom 등)
+  # android_fullscreen: true # 전체 화면 여부
+
+  # iOS 설정 (선택 사항)
+  ios: true # iOS 스플래시 화면 생성 여부
+  # ios_content_mode: scaleAspectFit # 이미지 스케일링 모드 (scaleAspectFit, center 등)
+
+  android_12: # Android 12 이상을 위한 추가 설정
+    color: "#000000" # Android 12 이상 스플래시 화면의 배경색 (흰색)
+    image: "assets/images/appboard_splash.jpeg" # Android 12 이상 스플래시 화면에 표시될 이미지
+
+  # 웹 설정 (선택 사항)
+  web: false # 웹 스플래시 화면 생성 여부
+  # web_image: assets/splash_web.png
+  # web_color: "#FFFFFF"
+  # web_fade_in_duration: 500 # 웹 스플래시 페이드인 시간 (밀리초)
+
+  # 스플래시 화면이 끝난 후 나타날 앱의 배경 색상 (선택 사항)
+  # 이 색상은 앱의 첫 번째 화면 배경과 일치시키는 것이 좋습니다.
+  # flutter_native_splash:
+  #   color: "#FFFFFF"
+  #   image: assets/splash.png
+  #   android_gravity: center
+  #   ios_content_mode: center
+  #   fullscreen: true
+  #   android_fullscreen: true
+  #   ios_fullscreen: true

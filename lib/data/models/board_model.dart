@@ -9,6 +9,8 @@ class BoardModel with _$BoardModel {
     required int id,
     required String name,
     required String slug,
+    @JsonKey(name: 'login_required') required bool loginRequired,
+    @JsonKey(name: 'admin_only') required bool adminOnly,
   }) = _BoardModel;
 
   factory BoardModel.fromJson(Map<String, dynamic> json) => _$BoardModelFromJson(json);

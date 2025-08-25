@@ -8,5 +8,7 @@ class Board with _$Board {
     required int id,
     required String name,
     required String slug,
+    required bool loginRequired,
+    required bool adminOnly,
   }) = _Board;
 }
